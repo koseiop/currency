@@ -5,11 +5,11 @@
         <title>{{ currency }}</title>
     </head>
     <body>
-        <h2><p>{{ currency }}</p></h2>
+        <h2><p>{{ currency }} - {{ currency.date }}</p></h2>
         {% if qs %}
             <ul>
                 {% for curr in qs %}
-                    <li>{{ curr.symbol }} {{ curr.rate_to_gbp }}</li>
+                    <li>{{ curr.symbol }} - {{ curr.rate_to_gbp }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
