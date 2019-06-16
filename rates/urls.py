@@ -5,5 +5,5 @@ from .models import Currency
 
 app_name = 'rates'
 urlpatterns = [
-    path('', views.index, name='home'),
+    path('<str:base_name>/', views.index, name='home'),
 ]
