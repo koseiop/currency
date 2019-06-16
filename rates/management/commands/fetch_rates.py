@@ -11,13 +11,14 @@ def fetch_rates(url, db_name):
 	data = data.json()
 	rates = data['rates']
 	for curr in tqdm(rates):
+		#print( f"{curr} {data['base']} {rates[curr]} {data['date']}" )
 		try:
-			c.execute("INSERT INTO currency_currency (id, symbol, base, rate_to_gbp, date) VALUES (null, ?, ?)", (curr, data['base'], rates[curr], data['date']))
+			c.execute("INSERT INTO rates_currency (id, symbol, base, rate_to_gbp, date) VALUES (null, ?, ?, ?, ?)", (curr, data['base'], rates[curr], data['date']))
 		except Exception as e:
 			conn.rollback()
 			print("failed")
 	try:
-		c.execute("INSERT INTO currency_basecurrency (id, symbol, date) VALUES (null, ?, ?)", (data['base'], data['date']))
+		c.execute("INSERT INTO rates_basecurrency (id, symbol, date) VALUES (null, ?, ?)", (data['base'], data['date']))
 	except Exception as e:
 		conn.rollback()
 		print("failed")

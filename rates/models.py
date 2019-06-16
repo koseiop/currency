@@ -6,7 +6,13 @@ class Currency(models.Model):
 	rate_to_gbp = models.DecimalField(max_digits=15, decimal_places=5)
 	date = models.DateField(auto_now=False, auto_now_add=False)
 
+	def __str__(self):
+		return self.symbol
+
 class BaseCurrency(models.Model):
 	symbol = models.CharField(max_length=3)
 	date = models.DateField(auto_now=False, auto_now_add=False)
 	#currencies = models.ManyToManyField(Currency)
+
+	def __str__(self):
+		return self.symbol
