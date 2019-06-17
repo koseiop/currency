@@ -5,5 +5,7 @@ from .models import Currency
 
 app_name = 'rates'
 urlpatterns = [
-    path('<str:base_name>/', views.index, name='home'),
+    # path('', views.HomeView.as_view(), name='home',),
+    path('', views.home, name='home',),
+    path('<str:base_name>/', views.currency, name='latest currency data'),
 ]

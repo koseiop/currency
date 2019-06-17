@@ -1,0 +1,14 @@
+{% extends 'rates/block_template.html' %}
+    <div class="container">
+        {% block content %}
+            {% if base_list %}
+                <ul>
+                    {% for curr in base_list %}
+                        <li><a href="{{ curr }}/">{{ curr }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No currencies found</p>
+            {% endif %}
+        {% endblock %}
+    </div>

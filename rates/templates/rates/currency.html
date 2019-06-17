@@ -1,0 +1,15 @@
+{% extends 'rates/block_template.html' %}
+    <div class="container-fluid">
+        {% block content %}
+            <div class="row">
+                {% for key, values in currency.items %}
+                <div class="col-sm">
+                    <li>{{key}} - {{key.date}}</li>
+                    {% for val, rate in values.items %}
+                        <li>{{val}} - {{rate}}</li>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        {% endblock %}
+    </div>
