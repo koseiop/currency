@@ -20,7 +20,6 @@ def home(request):
     for base_curr in BaseCurrency.objects.all():
         base_list.append(base_curr.symbol)
     base_list = list(set(base_list))
-    print(base_list, "hjfjhasgfasjf")
     context = {
         'base_list': base_list,
     }

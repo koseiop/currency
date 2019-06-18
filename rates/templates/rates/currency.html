@@ -1,15 +1,30 @@
 {% extends 'rates/block_template.html' %}
-    <div class="container-fluid">
-        {% block content %}
-            <div class="row">
-                {% for key, values in currency.items %}
-                <div class="col-sm">
-                    <li>{{key}} - {{key.date}}</li>
-                    {% for val, rate in values.items %}
-                        <li>{{val}} - {{rate}}</li>
-                    {% endfor %}
-                </div>
-                {% endfor %}
-            </div>
-        {% endblock %}
+{% load rate_tags %}
+{% load static %}
+{% block title %} {{ base_name }} {% endblock %}
+{% block content %}
+
+<div class="accordion" id="dateAccordion">
+    {% for key, values in currency.items|dictsort:"0.date"%}
+    <div class="card">
+    <div class="card-header" id="heading{{key}}">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#{{key}}{{ forloop.counter }}" aria-expanded="true" aria-controls="{{key}}{{ forloop.counter }}">
+          {{key}} - {{key.date}}
+        </button>
+      </h2>
     </div>
+
+    <div id="{{key}}{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{key}}" data-parent="#dateAccordion">
+      <div class="card-body">
+          <ul class="list-group list-group-flush">
+              {% for val, rate in values.items %}
+                  <li class="list-group-item">{{val}} - {{rate}}</li>
+              {% endfor %}
+          </ul>
+      </div>
+    </div>
+    </div>
+    {% endfor %}
+ </div>
+ {% endblock %}
