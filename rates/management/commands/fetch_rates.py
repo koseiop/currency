@@ -13,7 +13,7 @@ def fetch_rates(url, db_name):
 	for curr in tqdm(rates):
 		#print( f"{curr} {data['base']} {rates[curr]} {data['date']}" )
 		try:
-			c.execute("INSERT INTO rates_currency (id, symbol, base, rate_to_gbp, date) VALUES (null, ?, ?, ?, ?)", (curr, data['base'], rates[curr], data['date']))
+			c.execute("INSERT INTO rates_currency (id, symbol, base_id, rate_to_base, date) VALUES (null, ?, ?, ?, ?)", (curr, data['base'], rates[curr], data['date']))
 		except Exception as e:
 			conn.rollback()
 			print("failed")

@@ -1,11 +1,11 @@
 {% extends 'rates/block_template.html' %}
 {% load rate_tags %}
-{% load static %}
 {% block title %} {{ base_name }} {% endblock %}
 {% block content %}
 
-<div class="accordion" id="dateAccordion">
-    {% for key, values in currency.items|dictsort:"0.date"%}
+<div class="row">
+{% for key, values in currency.items|dictsort:"0.date" %}
+<div class="accordion" id="dateAccordion{{ forloop.counter }}">
     <div class="card">
     <div class="card-header" id="heading{{key}}">
       <h2 class="mb-0">
@@ -15,16 +15,17 @@
       </h2>
     </div>
 
-    <div id="{{key}}{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{key}}" data-parent="#dateAccordion">
+    <div id="{{key}}{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{key}}" data-parent="#dateAccordion{{ forloop.counter }}">
       <div class="card-body">
           <ul class="list-group list-group-flush">
-              {% for val, rate in values.items %}
+              {% for val, rate in values.items|dictsort:"0.symbol" %}
                   <li class="list-group-item">{{val}} - {{rate}}</li>
               {% endfor %}
           </ul>
       </div>
     </div>
     </div>
-    {% endfor %}
- </div>
+</div>
+{% endfor %}
+</div>
  {% endblock %}
