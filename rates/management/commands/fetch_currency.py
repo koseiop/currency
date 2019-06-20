@@ -46,6 +46,7 @@ class Command(BaseCommand):
 		currency = kwargs['string'][1].upper()
 		date_obj = datetime.datetime(int(date[0:4]), int(date[5:7]), int(date[8:]))
 		print(date_obj)
+		# TODO: Saturdays and Sundays return Fridays results need to account for this (Check Monday also)
 		try:
 			if BaseCurrency.objects.get(symbol=currency, date__icontains=date):
 				print(f"Data for currency {currency} on {date} already exists.\nAborting script")
