@@ -31,7 +31,7 @@ def add_currency(original_data, currency_dict, db_name):
 			c.execute("INSERT INTO rates_currency (id, symbol, base_id, rate_to_base, date) VALUES (null, ?, ?, ?, ?)", (curr, base_curr.id, currency_dict[curr], original_data['date']))
 		except Exception as e:
 			conn.rollback()
-			print("failed")
+			print(f"failed, {e}")
 		finally:
 			conn.commit()
 
@@ -45,19 +45,22 @@ class Command(BaseCommand):
 		date = kwargs['string'][0]
 		currency = kwargs['string'][1].upper()
 		date_obj = datetime.datetime(int(date[0:4]), int(date[5:7]), int(date[8:]))
-		print(date_obj)
-		# TODO: Saturdays and Sundays return Fridays results need to account for this (Check Monday also)
-		try:
-			if BaseCurrency.objects.get(symbol=currency, date__icontains=date):
-				print(f"Data for currency {currency} on {date} already exists.\nAborting script")
-		except Exception:
-			print(f"Data for currency {currency} on {date} will be added.")
-			url = f"https://api.exchangeratesapi.io/{date}?base={currency}"
-			print(url)
-			db = 'db.sqlite3'
+		date_obj_text = date_obj.strftime("%A %d %b %Y")
+		# Saturdays and Sundays return Fridays results so will end script if these dates are passed
+		if (date_obj.strftime("%A") == "Saturday") or (date_obj.strftime("%A") == "Sunday"):
+			print(f"{date_obj_text} falls on a weekend and contains Fridays data, pass Fridays date instead.\nAborting script")
+		else:
 			try:
-				fetch_currency(url, db)
-				self.stdout.write(self.style.SUCCESS("Data imported successfully."))
-			except Exception as e:
-				print(e)
-				self.stdout.write(self.style.SUCCESS(f"Error. {e}"))
+				if BaseCurrency.objects.get(symbol=currency, date__icontains=date):
+					print(f"Data for currency {currency} on {date_obj_text} already exists.\nAborting script")
+			except Exception:
+				print(f"Data for currency {currency} on {date_obj_text} will be added.")
+				url = f"https://api.exchangeratesapi.io/{date}?base={currency}"
+				print(url)
+				db = 'db.sqlite3'
+				try:
+					fetch_currency(url, db)
+					self.stdout.write(self.style.SUCCESS("Data imported successfully."))
+				except Exception as e:
+					print(e)
+					self.stdout.write(self.style.SUCCESS(f"Error. {e}"))

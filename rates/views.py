@@ -18,7 +18,7 @@ def home(request):
 
 def currency(request, base_name):
     currency = {}
-    curr_list = ['NZD', 'CAD', 'USD', 'AUD', 'HKD', 'GBP', 'EUR']
+    curr_list = ['NZD', 'CAD', 'USD', 'AUD', 'HKD', 'GBP', 'EUR', 'CHF']
     for base_curr in BaseCurrency.objects.filter(symbol=base_name.upper()):
         currency[base_curr] = {}
         for curr in Currency.objects.filter(base=base_curr, symbol__in=curr_list):
